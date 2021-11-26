@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Objects/Spike/Spike.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/white_spike.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/black_spike.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 3.5, 5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 3.5, 2.5 )
+
+[node name="Spike" type="Area2D"]
+collision_layer = 8
+script = ExtResource( 1 )
+black_texture = ExtResource( 3 )
+white_texture = ExtResource( 2 )
+
+[node name="SpriteBottom" type="Sprite" parent="."]
+position = Vector2( 0, 20 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+centered = false
+vframes = 3
+frame = 2
+
+[node name="SpriteTop" type="Sprite" parent="."]
+position = Vector2( 0, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+centered = false
+vframes = 3
+frame = 1
+
+[node name="HitBox1" type="CollisionShape2D" parent="."]
+position = Vector2( 5, 23.5 )
+shape = SubResource( 1 )
+
+[node name="HitBox2" type="CollisionShape2D" parent="."]
+position = Vector2( 12.5, 26 )
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_Spike_body_entered"]

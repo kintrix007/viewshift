@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Levels/Level1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://NokiaEffect/transition_effect.shader" type="Shader" id=2]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sounds/inversio_v4.wav" type="AudioStream" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/effect_range = 0.0
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node2D
+
+export(String, FILE) var next_level_path : String
+
+func _ready() -> void:
+	var white : TileMap = $White
+	var black : TileMap = $Black
+	var gray : TileMap = $Gray
+	white.modulate = Color(1,1,1,1)
+	black.modulate = Color(1,1,1,1)
+	gray.modulate = Color(1,1,1,1)
+	
+	for y in range(48):
+		for x in range(84):
+			var cell : int = gray.get_cell(x, y)
+			if not cell == TileMap.INVALID_CELL:
+				gray.set_cell(x, y, (x+y) % 2 + 1)
+
+func load_next_level() -> void:
+	SceneManager.change_scene_to_anim(load(next_level_path))
+
+
+func _on_player_win() -> void:
+	next_level_path and load_next_level()
+"
+
+[node name="TransitionContainer" type="ViewportContainer"]
+material = SubResource( 1 )
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 840, 480 )
+handle_input_locally = false
+msaa = 1
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
+gui_disable_input = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="World" type="Node" parent="Viewport"]
+script = ExtResource( 3 )
+bg_music = ExtResource( 4 )
+
+[node name="Level" parent="Viewport/World" instance=ExtResource( 1 )]
+script = SubResource( 2 )

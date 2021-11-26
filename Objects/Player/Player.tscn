@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Objects/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/white_tile.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/black_tile.png" type="Texture" id=3]
+[ext_resource path="res://Objects/Player/Move.gd" type="Script" id=4]
+[ext_resource path="res://Objects/Player/Sounds.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Sounds/Effects/die.wav" type="AudioStream" id=6]
+[ext_resource path="res://Objects/Explosion/ExplosionParticles.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Sounds/Effects/win1.wav" type="AudioStream" id=8]
+[ext_resource path="res://Objects/Player/Flip.gd" type="Script" id=9]
+[ext_resource path="res://Assets/Sounds/Effects/jump.wav" type="AudioStream" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 9.5, 9.5 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_mask = 4
+script = ExtResource( 1 )
+explosion_particles = ExtResource( 7 )
+black_texture = ExtResource( 3 )
+white_texture = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1.05, 1.05 )
+texture = ExtResource( 3 )
+
+[node name="HitBox" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="AboveSideArea" type="Area2D" parent="."]
+position = Vector2( 0, -20 )
+collision_layer = 0
+collision_mask = 4
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="HitBox" type="CollisionShape2D" parent="AboveSideArea"]
+shape = SubResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="BelowSideArea" type="Area2D" parent="."]
+position = Vector2( 0, 20 )
+collision_layer = 0
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="HitBox" type="CollisionShape2D" parent="BelowSideArea"]
+shape = SubResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Move" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Sounds" type="Node" parent="."]
+script = ExtResource( 5 )
+jump = ExtResource( 10 )
+die = ExtResource( 6 )
+win = ExtResource( 8 )
+
+[node name="Flip" type="Node" parent="."]
+script = ExtResource( 9 )
