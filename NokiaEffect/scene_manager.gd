@@ -4,8 +4,8 @@ onready var effect_container : ViewportContainer =\
 	get_node("/root/MainViewportContainer/Viewport/TransitionContainer")
 onready var nokia_root : Node = effect_container.get_node("Viewport/World")
 
-#const LEVEL1 := "res://Scenes/Levels/Level1.tscn"
-const LEVEL1 := "res://Scenes/Levels/Level7.tscn"
+const LEVEL1 := "res://Scenes/Levels/Level1.tscn"
+#const LEVEL1 := "res://Scenes/Levels/Level8.tscn"
 
 var tween := Tween.new()
 var current_scene : PackedScene = null

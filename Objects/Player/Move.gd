@@ -7,6 +7,7 @@ export var speed : float = 7000.0
 export var mid_air_control : float = 0.5
 export var gravity : float = 4000.0
 export var gravitiy_at_peak : float = 0.45
+export var peak_gravity_weaken_area : float = 200.0
 export var jump_strength : float = 750.0
 export var jump_cancel_strength : float = 0.5
 export var friction : float = 0.68
@@ -21,19 +22,18 @@ func move(delta : float, up_vec : Vector2) -> void:
 	var inputs : float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	
 	# gravity affects you less at the peak of the jump
-	if (
-		-100 + (100 * up_vec.y) < vel.y and
-		vel.y < 100 + (100 * up_vec.y)
-	):
+	var weaken_area := peak_gravity_weaken_area / 2
+	if weaken_area*up_vec.y - weaken_area < vel.y and vel.y < weaken_area*up_vec.y + weaken_area:
 		vel.y += gravity * gravitiy_at_peak * delta * -up_vec.y
 	else:
 		vel.y += gravity * delta * -up_vec.y
 	
+	# only get a fraction of the control mid-air
 	if frames_falling < 4:
 		vel.x += inputs * speed * delta
 	else:
-		# only a fraction of the control mid-air
 		vel.x += inputs * speed * mid_air_control * delta
+	
 	vel.x = clamp(vel.x, -max_speed, max_speed)
 	
 	if Input.is_action_just_pressed("jump"):

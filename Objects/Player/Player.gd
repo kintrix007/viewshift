@@ -64,7 +64,7 @@ func _win() -> void:
 	yield(get_tree().create_timer(0.15), "timeout")
 	emit_signal("win")
 
-func _die(killed_by : Area2D) -> void:
+func _die(killed_by: Area2D) -> void:
 	if not dead:
 		dead = true
 		set_process(false)
